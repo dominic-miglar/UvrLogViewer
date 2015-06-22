@@ -1,0 +1,80 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+      <ng-include src="'views/controller-sidebar-nav.html'"></ng-include>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <h1 class="page-header">{{ controller.name }}</h1>
+
+      <p>{{ controller.description }}</p>
+      
+      <div ng-show="showValueType == 'analog' || showValueType == 'all'">
+      <h2 class="sub-header">Analoge Werte</h2>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Beschreibung</th>
+              <th>Latest Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="ioIdentifier in analogIoIdentifiers">
+              <td>{{ ioIdentifier.name }}</td>
+              <td>{{ ioIdentifier.description }}</td>
+              <td>{{ latestValues[ioIdentifier.latest_value] | uvrValue:ioIdentifier }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+      <div ng-show="showValueType == 'digital' || showValueType == 'all'">
+      <h2 class="sub-header">Digitale Werte</h2>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Beschreibung</th>
+              <th>Latest Value</th>
+              <th>Drehzahlstufe</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="ioIdentifier in digitalIoIdentifiers">
+              <td>{{ ioIdentifier.name }}</td>
+              <td>{{ ioIdentifier.description }}</td>
+              <td>{{ latestValues[ioIdentifier.latest_value] | uvrValue:ioIdentifier }}</td>
+              <td>{{ latestValues[ioIdentifier.latest_value] | uvrSpeed }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+      <div ng-show="showValueType == 'heatMeter' || showValueType == 'all'">
+      <h2 class="sub-header">W&auml;rmemengen Werte</h2>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Beschreibung</th>
+              <th>Leistung</th>
+              <th>W&auml;rmemenge</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="ioIdentifier in heatMeterIoIdentifiers">
+              <td>{{ ioIdentifier.name }}</td>
+              <td>{{ ioIdentifier.description }}</td>
+              <td>{{ latestValues[ioIdentifier.latest_value] | uvrPower }}</td>
+              <td>{{ latestValues[ioIdentifier.latest_value] | uvrEnergy }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>

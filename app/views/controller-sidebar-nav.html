@@ -1,0 +1,28 @@
+<ul class="nav nav-sidebar">
+  <li ng-show="$parent.showValueType != 'all'">
+    <a href="" ng-click="$parent.showValueType = 'all'">Übersicht (Alle Werte)</a>
+  </li>
+  <li ng-show="$parent.showValueType == 'all'" class="active">
+    <a href="" ng-click="$parent.showValueType = 'all'">Übersicht (Alle Werte)</a>
+  </li>
+</ul>
+<ul class="nav nav-sidebar">
+  <li ng-show="$parent.showValueType != 'analog'">
+    <a href="" ng-click="$parent.showValueType = 'analog'">Analoge Werte</a>
+  </li>
+  <li ng-show="$parent.showValueType == 'analog'" class="active">
+    <a href="" ng-click="$parent.showValueType = 'analog'">Analoge Werte</a>
+  </li>
+  <li ng-show="$parent.showValueType != 'digital'">
+    <a href="" ng-click="$parent.showValueType = 'digital'">Digitale Werte</a>
+  </li>
+  <li ng-show="$parent.showValueType == 'digital'" class="active">
+    <a href="" ng-click="$parent.showValueType = 'digital'">Digitale Werte</a>
+  </li>
+  <li ng-show="$parent.showValueType != 'heatMeter'">
+    <a href="" ng-click="$parent.showValueType = 'heatMeter'">Wärmemengenzähler</a>
+  </li>
+  <li ng-show="$parent.showValueType == 'heatMeter'" class="active">
+    <a href="" ng-click="$parent.showValueType = 'heatMeter'">Wärmemengenzähler</a>
+  </li>
+</ul>

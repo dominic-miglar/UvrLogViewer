@@ -1,0 +1,40 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="main">
+      <h1 class="page-header">Heizungsregelungen</h1>
+
+      <div class="row placeholders">
+        <a ng-repeat="controller in controllers" ng-href="#/controllers/{{ controller.id }}/">
+          <div class="col-xs-6 col-sm-3 placeholder">
+            <img src="http://ta.co.at/de/assets/images/Produkte/1611/UVR1611K.png" class="img-responsive" alt="UVR1611">
+            <h4>{{ controller.name }}</h4>
+            <span class="text-muted">Something else</span>
+          </div>
+        </a>
+      </div>
+
+      <h2 class="sub-header">Tabelle</h2>
+
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="controller in controllers">
+              <td><a ng-href="#/controllers/{{ controller.id }}/">{{ controller.id }}</a></td>
+              <td>{{ controller.name }}</td>
+              <td>{{ controller.description }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
