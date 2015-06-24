@@ -56,5 +56,13 @@ uvrLogViewerApi.factory('Api', function ($rootScope, $http, $cookieStore, $q, CO
     getHeatMeterValue: function (valueId) {
       return $http.get(CONFIGURATION.apiUrl + 'heatmetervalues/' + valueId + '/');
     },
+    getAnalogValuesForIoIdentifier: function (ioIdentifierId, date_from) {
+      var today = new Date();
+      var fromDateWanted = new Date();
+      fromDateWanted.setDate(today.getDate() - date_from);
+      var getUrl = CONFIGURATION.apiUrl + 'analogvalues/' + '?io_identifier=' + ioIdentifierId + '&date_from=' + fromDateWanted.getFullYear() + '-' + (fromDateWanted.getMonth()+1) + '-' + fromDateWanted.getDate();
+      console.log(getUrl);
+      return $http.get(getUrl);
+    }
   };
 });

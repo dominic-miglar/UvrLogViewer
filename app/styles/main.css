@@ -81,3 +81,15 @@ body {
     border-bottom: 0;
   }
 }
+
+/* BEGIN UvrLogViewer */
+
+tr.selected_io_row {
+  background-color: #428bca;
+  color: #FFF;
+}
+
+.table-striped tbody tr.selected_io_row:nth-child(odd) td {
+  background-color: #428bca;
+  color: #FFF;
+}

@@ -8,19 +8,50 @@
 
       <p>{{ controller.description }}</p>
       
+      <div ng-show="vizualizationData.length != 0">
+        <nvd3-line-chart
+          data="vizualizationData"
+          id="analogChart"
+          useInteractiveGuideline="true"
+          margin="{left:50,top:0,bottom:115,right:55}"
+          x="xFunction()" 
+          y="yFunction()"
+          width="900"
+          height="450"          
+          xAxisRotateLabels="65"
+          xAxisTickFormat="xAxisTickFormatFunction()"
+          yAxisTickFormat="yAxisTickFormatFunction()"
+          color="colorFunction()"
+          legendColor="colorFunction()"
+          showXAxis="true"
+          showYAxis="true"
+          showLegend="true"
+          objectEquality="true">
+        </nvd3-line-chart>
+      </div>
+      
       <div ng-show="showValueType == 'analog' || showValueType == 'all'">
-      <h2 class="sub-header">Analoge Werte</h2>
+        <div class="sub-header">
+          <h2>Analoge Werte</h2>
+        </div>
       <div class="table-responsive">
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Beschreibung</th>
-              <th>Latest Value</th>
+              <th></th>
+              <th class="col-md-1">Name</th>
+              <th class="col-md-3">Beschreibung</th>
+              <th class="col-md-10">Letzter Messwert</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="ioIdentifier in analogIoIdentifiers">
+            <tr ng-repeat="ioIdentifier in analogIoIdentifiers" 
+                selection-model 
+                selection-model-type="checkbox"
+                selection-model-mode="multiple-additive" 
+                selection-model-selected-class="selected_io_row"
+                selection-model-on-change="onAnalogIoIdentifierSelectionChanged(ioIdentifier)">
+              <td><input type="checkbox"></td>
               <td>{{ ioIdentifier.name }}</td>
               <td>{{ ioIdentifier.description }}</td>
               <td>{{ latestValues[ioIdentifier.latest_value] | uvrValue:ioIdentifier }}</td>
@@ -37,7 +68,7 @@
             <tr>
               <th>Name</th>
               <th>Beschreibung</th>
-              <th>Latest Value</th>
+              <th>Letzter Zustand</th>
               <th>Drehzahlstufe</th>
             </tr>
           </thead>

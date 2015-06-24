@@ -16,6 +16,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
+    'selectionModel',
+    'nvd3ChartDirectives',
     'uvrLogViewerConfig',
     'uvrLogViewerApi',
     'uvrLogViewerConfig',
