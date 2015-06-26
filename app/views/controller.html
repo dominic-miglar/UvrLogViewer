@@ -8,19 +8,17 @@
 
       <p>{{ controller.description }}</p>
       
-      <div ng-show="vizualizationData.length != 0">
+      <div class="vizualizationGraph" ng-show="vizualizationData.length != 0">
         <nvd3-line-chart
           data="vizualizationData"
           id="analogChart"
           useInteractiveGuideline="true"
-          margin="{left:50,top:0,bottom:115,right:55}"
-          x="xFunction()" 
-          y="yFunction()"
-          width="900"
-          height="450"          
+          margin="{left:60,top:0,bottom:135,right:70}"
+          width="750"
+          height="292"          
           xAxisRotateLabels="65"
           xAxisTickFormat="xAxisTickFormatFunction()"
-          yAxisTickFormat="yAxisTickFormatFunction()"
+          yAxisTickFormat="analogChartYAxisTickFormatFunction()"
           color="colorFunction()"
           legendColor="colorFunction()"
           showXAxis="true"

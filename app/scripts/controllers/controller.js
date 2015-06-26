@@ -15,26 +15,14 @@ angular.module('uvrLogViewerApp')
     
     $scope.xAxisTickFormatFunction = function () {
       return function (d) {
-        return d3.time.format('%d.%m.%y %X')(new Date(d));
+        return d3.time.format('%d.%m.%y\n%X')(new Date(d));
         //return d3.time.format('%X')(new Date(d));
       };
     };
     
-    $scope.yAxisTickFormatFunction = function () {
+    $scope.analogChartYAxisTickFormatFunction = function () {
       return function (d) {
         return d + ' \xB0C';
-      };
-    };
-    
-    $scope.xFunction = function () {
-      return function (d) {
-        return d[0];
-      };
-    };
-    
-    $scope.yFunction = function () {
-      return function (d) {
-        return d[1];
       };
     };
     

@@ -93,3 +93,12 @@ tr.selected_io_row {
   background-color: #428bca;
   color: #FFF;
 }
+
+/* BEGIN NVD3 Chart */
+.nvd3 .nv-axis .nv-axisMaxMin text {
+    font-weight: bold;
+}
+
+.nvd3 .nv-axis text {
+  font-size: 0.7em;
+}
