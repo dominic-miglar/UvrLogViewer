@@ -8,9 +8,9 @@
 
       <p>{{ controller.description }}</p>
       
-      <div class="vizualizationGraph" ng-show="vizualizationData.length != 0">
+      <div class="vizualizationGraph" ng-show="analogVizualizationData.length != 0 && (showValueType == 'analog' || showValueType == 'all')">
         <nvd3-line-chart
-          data="vizualizationData"
+          data="analogVizualizationData"
           id="analogChart"
           useInteractiveGuideline="true"
           margin="{left:60,top:0,bottom:135,right:70}"
@@ -28,58 +28,84 @@
         </nvd3-line-chart>
       </div>
       
+      <div class="vizualizationGraph" ng-show="digitalVizualizationData.length != 0 && (showValueType == 'digital' || showValueType == 'all')">
+        <nvd3-line-chart
+          data="digitalVizualizationData"
+          id="digitalChart"
+          useInteractiveGuideline="true"
+          margin="{left:60,top:0,bottom:135,right:70}"
+          width="750"
+          height="292"          
+          xAxisRotateLabels="65"
+          xAxisTickFormat="xAxisTickFormatFunction()"
+          color="colorFunction()"
+          legendColor="colorFunction()"
+          showXAxis="true"
+          showYAxis="true"
+          showLegend="true"
+          objectEquality="true">
+        </nvd3-line-chart>
+      </div>
+      
       <div ng-show="showValueType == 'analog' || showValueType == 'all'">
         <div class="sub-header">
           <h2>Analoge Werte</h2>
         </div>
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th></th>
-              <th class="col-md-1">Name</th>
-              <th class="col-md-3">Beschreibung</th>
-              <th class="col-md-10">Letzter Messwert</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="ioIdentifier in analogIoIdentifiers" 
-                selection-model 
-                selection-model-type="checkbox"
-                selection-model-mode="multiple-additive" 
-                selection-model-selected-class="selected_io_row"
-                selection-model-on-change="onAnalogIoIdentifierSelectionChanged(ioIdentifier)">
-              <td><input type="checkbox"></td>
-              <td>{{ ioIdentifier.name }}</td>
-              <td>{{ ioIdentifier.description }}</td>
-              <td>{{ latestValues[ioIdentifier.latest_value] | uvrValue:ioIdentifier }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th></th>
+                <th class="col-md-1">Name</th>
+                <th class="col-md-3">Beschreibung</th>
+                <th class="col-md-10">Letzter Messwert</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="ioIdentifier in analogIoIdentifiers" 
+                  selection-model 
+                  selection-model-type="checkbox"
+                  selection-model-mode="multiple-additive" 
+                  selection-model-selected-class="selected_io_row"
+                  selection-model-on-change="onAnalogIoIdentifierSelectionChanged(ioIdentifier)">
+                <td><input type="checkbox"></td>
+                <td>{{ ioIdentifier.name }}</td>
+                <td>{{ ioIdentifier.description }}</td>
+                <td>{{ latestValues[ioIdentifier.latest_value] | uvrValue:ioIdentifier }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div ng-show="showValueType == 'digital' || showValueType == 'all'">
-      <h2 class="sub-header">Digitale Werte</h2>
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Beschreibung</th>
-              <th>Letzter Zustand</th>
-              <th>Drehzahlstufe</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="ioIdentifier in digitalIoIdentifiers">
-              <td>{{ ioIdentifier.name }}</td>
-              <td>{{ ioIdentifier.description }}</td>
-              <td>{{ latestValues[ioIdentifier.latest_value] | uvrValue:ioIdentifier }}</td>
-              <td>{{ latestValues[ioIdentifier.latest_value] | uvrSpeed }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <h2 class="sub-header">Digitale Werte</h2>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Beschreibung</th>
+                <th>Letzter Zustand</th>
+                <th>Drehzahlstufe</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="ioIdentifier in digitalIoIdentifiers"
+                  selection-model 
+                  selection-model-type="checkbox"
+                  selection-model-mode="multiple-additive" 
+                  selection-model-selected-class="selected_io_row"
+                  selection-model-on-change="onDigitalIoIdentifierSelectionChanged(ioIdentifier)">
+                <td><input type="checkbox"></td>
+                <td>{{ ioIdentifier.name }}</td>
+                <td>{{ ioIdentifier.description }}</td>
+                <td>{{ latestValues[ioIdentifier.latest_value] | uvrValue:ioIdentifier }}</td>
+                <td>{{ latestValues[ioIdentifier.latest_value] | uvrSpeed }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div ng-show="showValueType == 'heatMeter' || showValueType == 'all'">
       <h2 class="sub-header">W&auml;rmemengen Werte</h2>
@@ -103,6 +129,13 @@
           </tbody>
         </table>
       </div>
+      </div>
+      <div ng-show="showValueType == 'schema'">
+        <!--<object id="svgObject" data="http://10.0.0.8/heatSVG/drawing.svg" type="image/svg+xml"
+          width="100%" height="100%">
+          <p>Your browser does not support SVG images.</p>
+        </object>-->
+        <schema></schema>
       </div>
     </div>
   </div>

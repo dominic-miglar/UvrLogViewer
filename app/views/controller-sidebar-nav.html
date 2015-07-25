@@ -26,3 +26,11 @@
     <a href="" ng-click="$parent.showValueType = 'heatMeter'">Wärmemengenzähler</a>
   </li>
 </ul>
+<ul class="nav nav-sidebar">
+  <li ng-show="$parent.showValueType != 'schema'">
+    <a href="" ng-click="$parent.showValueType = 'schema'">Schema</a>
+  </li>
+  <li ng-show="$parent.showValueType == 'schema'" class="active">
+    <a href="" ng-click="$parent.showValueType = 'schema'">Schema</a>
+  </li>
+</ul>

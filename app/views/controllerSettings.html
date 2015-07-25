@@ -1,0 +1,114 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+      <ng-include src="'views/controllerSettings-sidebar-nav.html'"></ng-include>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <h1 class="page-header">Einstellungen - {{ controller.name }}</h1>
+
+      <p>{{ controller.description }}</p>
+      
+      <div ng-show="configurationSection == 'controller' || configurationSection == 'all'">
+        <div class="sub-header">
+          <h2>Heizungsregelung</h2>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <th class="col-md-2"></th>
+              <th class="col-md-9"></th>
+              <th class="col-md-1"></th>
+            </thead>
+            <tbody>
+              <tr>
+                <th>ID</th>
+                <td>{{ controller.id }}</td>
+                <td></td>
+              </tr>
+              <tr>
+                <th>Name</th>
+                <td>{{ controller.name }}</td>
+                <td></td>
+              </tr>
+              <tr>
+                <th>Beschreibung</th>
+                <td><input type="text" class="form-control" placeholder="Beschreibung" ng-model="controller.description" /></td>
+                <td><button class="btn btn-default" ng-click="updateController(controller)">Speichern</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div ng-show="configurationSection == 'analog' || configurationSection == 'all'">
+        <div class="sub-header">
+          <h2>Analoge Werte</h2>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th class="col-md-2">Name</th>
+                <th class="col-md-9">Beschreibung</th>
+                <th class="col-md-1"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="ioIdentifier in analogIoIdentifiers">
+                <td>{{ ioIdentifier.name }}</td>
+                <td><input type="text" class="form-control" placeholder="Beschreibung" ng-model="ioIdentifier.description" /></td>
+                <td><button class="btn btn-default" ng-click="updateIoIdentifier(ioIdentifier)">Speichern</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div ng-show="configurationSection == 'digital' || configurationSection == 'all'">
+        <div class="sub-header">
+          <h2>Digitale Werte</h2>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th class="col-md-2">Name</th>
+                <th class="col-md-9">Beschreibung</th>
+                <th class="col-md-1"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="ioIdentifier in digitalIoIdentifiers">
+                <td>{{ ioIdentifier.name }}</td>
+                <td><input type="text" class="form-control" placeholder="Beschreibung" ng-model="ioIdentifier.description" /></td>
+                <td><button class="btn btn-default" ng-click="updateIoIdentifier(ioIdentifier)">Speichern</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div ng-show="configurationSection == 'heatMeter' || configurationSection == 'all'">
+        <div class="sub-header">
+          <h2>W&auml;rmemengen Werte</h2>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th class="col-md-2">Name</th>
+                <th class="col-md-9">Beschreibung</th>
+                <th class="col-md-1"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="ioIdentifier in heatMeterIoIdentifiers">
+                <td>{{ ioIdentifier.name }}</td>
+                <td><input type="text" class="form-control" placeholder="Beschreibung" ng-model="ioIdentifier.description" /></td>
+                <td><button class="btn btn-default" ng-click="updateIoIdentifier(ioIdentifier)">Speichern</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

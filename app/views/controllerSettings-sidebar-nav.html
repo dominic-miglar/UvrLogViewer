@@ -1,0 +1,34 @@
+<ul class="nav nav-sidebar">
+  <li ng-show="$parent.configurationSection != 'all'">
+    <a href="" ng-click="$parent.configurationSection = 'all'">Alle Einstellungen</a>
+  </li>
+  <li ng-show="$parent.configurationSection == 'all'" class="active">
+    <a href="" ng-click="$parent.configurationSection = 'all'">Alle Einstellungen</a>
+  </li>
+</ul>
+<ul class="nav nav-sidebar">
+  <li ng-show="$parent.configurationSection != 'controller'">
+    <a href="" ng-click="$parent.configurationSection = 'controller'">Heizungsregelung</a>
+  </li>
+  <li ng-show="$parent.configurationSection == 'controller'" class="active">
+    <a href="" ng-click="$parent.configurationSection = 'controller'">Heizungsregelung</a>
+  </li>
+  <li ng-show="$parent.configurationSection != 'analog'">
+    <a href="" ng-click="$parent.configurationSection = 'analog'">Analoge Werte</a>
+  </li>
+  <li ng-show="$parent.configurationSection == 'analog'" class="active">
+    <a href="" ng-click="$parent.configurationSection = 'analog'">Analoge Werte</a>
+  </li>
+  <li ng-show="$parent.configurationSection != 'digital'">
+    <a href="" ng-click="$parent.configurationSection = 'digital'">Digitale Werte</a>
+  </li>
+  <li ng-show="$parent.configurationSection == 'digital'" class="active">
+    <a href="" ng-click="$parent.configurationSection = 'digital'">Digitale Werte</a>
+  </li>
+  <li ng-show="$parent.configurationSection != 'heatMeter'">
+    <a href="" ng-click="$parent.configurationSection = 'heatMeter'">Wärmemengenzähler</a>
+  </li>
+  <li ng-show="$parent.configurationSection == 'heatMeter'" class="active">
+    <a href="" ng-click="$parent.configurationSection = 'heatMeter'">Wärmemengenzähler</a>
+  </li>
+</ul>

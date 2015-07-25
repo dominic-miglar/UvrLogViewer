@@ -63,6 +63,20 @@ uvrLogViewerApi.factory('Api', function ($rootScope, $http, $cookieStore, $q, CO
       var getUrl = CONFIGURATION.apiUrl + 'analogvalues/' + '?io_identifier=' + ioIdentifierId + '&date_from=' + fromDateWanted.getFullYear() + '-' + (fromDateWanted.getMonth()+1) + '-' + fromDateWanted.getDate();
       console.log(getUrl);
       return $http.get(getUrl);
+    },
+    updateIoIdentifier: function (ioIdentifier) {
+      return $http.put(CONFIGURATION.apiUrl + 'ioidentifiers/' + ioIdentifier.id + '/', ioIdentifier);
+    },
+    updateController: function (controller) {
+      return $http.put(CONFIGURATION.apiUrl + 'controllers/' + controller.id + '/', controller);
+    },
+    getDigitalValuesForIoIdentifier: function(ioIdentifierId, date_from) {
+      var today = new Date();
+      var fromDateWanted = new Date();
+      fromDateWanted.setDate(today.getDate() - date_from);
+      var getUrl = CONFIGURATION.apiUrl + 'digitalvalues/' + '?io_identifier=' + ioIdentifierId + '&date_from=' + fromDateWanted.getFullYear() + '-' + (fromDateWanted.getMonth()+1) + '-' + fromDateWanted.getDate();
+      console.log(getUrl);
+      return $http.get(getUrl);
     }
   };
 });

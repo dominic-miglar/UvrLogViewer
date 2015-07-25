@@ -10,12 +10,32 @@
 
 angular.module('uvrLogViewerApp')
   .controller('ControllerCtrl', ['$scope', '$rootScope', '$routeParams', 'Api', function ($scope, $rootScope, $routeParams, Api) {
+    var vm = this;
+
+    $rootScope.navActive = 'controllers';
+    $scope.showValueType = 'all';
+    $scope.analogVizualizationData = [];
+    $scope.digitalVizualizationData = [];
+    $scope.latestValues = [];
+    vm.latestValues = $scope.latestValues;
+    $scope.analogIoIdentifiers = [];
+    $scope.digitalIoIdentifiers = [];
+    $scope.heatMeterIoIdentifiers = [];
+    $scope.analogValues = [];
+    $scope.digitalValues = [];
+    $scope.analogValuesForVisualization = [];
+    $scope.digitalValuesForVisualization = [];
+    $scope.controllerId = $routeParams.controllerId;
+    $scope.colorArray = ['#00CC00', '#3300FF', '#CC0000', '#FFFF00', '#CC0099', '#00FFFF', '#8B4513'];
     
-    $scope.vizualizationData = [];
+
+    this.getTestValue = function() {
+      return 'UFO';
+    };
     
     $scope.xAxisTickFormatFunction = function () {
       return function (d) {
-        return d3.time.format('%d.%m.%y\n%X')(new Date(d));
+        return d3.time.format('%d.%m.%y %X')(new Date(d));
         //return d3.time.format('%X')(new Date(d));
       };
     };
@@ -25,17 +45,6 @@ angular.module('uvrLogViewerApp')
         return d + ' \xB0C';
       };
     };
-    
-    $scope.colorArray = ['#00CC00', '#3300FF', '#CC0000', '#FFFF00', '#CC0099', '#00FFFF', '#8B4513'];
-    
-    $rootScope.navActive = 'controllers';
-    $scope.showValueType = 'all';
-    
-    $scope.latestValues = new Array ();
-    $scope.analogValues = new Array ();
-    $scope.analogValuesForVisualization = new Array();
-    
-    $scope.controllerId = $routeParams.controllerId;
     
     $scope.colorFunction = function() {
       return function(d, i) {
@@ -85,7 +94,7 @@ angular.module('uvrLogViewerApp')
       Api.getAnalogIoIdentifiersForController($scope.controller).then(
         function (response) {
           $scope.analogIoIdentifiers = response.data;
-          console.log(response.data);
+          vm.analogIoIdentifiers = response.data;
           $scope.getLatestAnalogValues();
       });
     };
@@ -94,6 +103,7 @@ angular.module('uvrLogViewerApp')
       Api.getDigitalIoIdentifiersForController($scope.controller).then(
         function (response) {
           $scope.digitalIoIdentifiers = response.data;
+          vm.digitalIoIdentifiers = response.data;
           $scope.getLatestDigitalValues();
       });
     };
@@ -102,6 +112,7 @@ angular.module('uvrLogViewerApp')
       Api.getHeatMeterIoIdentifiersForController($scope.controller).then(
         function (response) {
           $scope.heatMeterIoIdentifiers = response.data;
+          vm.heatMeterIoIdentifiers = response.data;
           $scope.getLatestHeatMeterValues();
       });
     };
@@ -139,22 +150,46 @@ angular.module('uvrLogViewerApp')
       );
     };
     
+    $scope.getDigitalValuesForIoIdentifier = function (ioIdentifier) {
+      Api.getDigitalValuesForIoIdentifier(ioIdentifier.id, 1).then(
+        function (response) {
+          $scope.digitalValues[ioIdentifier.id] = response.data;
+          $scope.prepareDigitalValuesForVisualization(ioIdentifier);
+        },
+        function (error) {
+          console.log('Error while retrieving ditital values for io identifier ' + ioIdentifier.id);
+        }
+      );
+    };
+    
     $scope.removeAnalogIoIdentifierFromGraph = function (ioIdentifier) {
       var arrayIndex = -1;
-      for (var i = 0; i < $scope.vizualizationData.length; i++) {
-        if ($scope.vizualizationData[i].key === ioIdentifier.description || $scope.vizualizationData[i].key === ioIdentifier.name) {
+      for (var i = 0; i < $scope.analogVizualizationData.length; i++) {
+        if ($scope.analogVizualizationData[i].key === ioIdentifier.description || $scope.analogVizualizationData[i].key === ioIdentifier.name) {
           arrayIndex = i;
           break;
         }
       }
       if (arrayIndex !== -1) {
-        $scope.vizualizationData.splice(arrayIndex, 1);
+        $scope.analogVizualizationData.splice(arrayIndex, 1);
+      }
+    };
+    
+    $scope.removeDigitalIoIdentifierFromGraph = function (ioIdentifier) {
+      var arrayIndex = -1;
+      for (var i = 0; i < $scope.digitalVizualizationData.length; i++) {
+        if ($scope.digitalVizualizationData[i].key === ioIdentifier.description || $scope.digitalVizualizationData[i].key === ioIdentifier.name) {
+          arrayIndex = i;
+          break;
+        }
+      }
+      if (arrayIndex !== -1) {
+        $scope.digitalVizualizationData.splice(arrayIndex, 1);
       }
     };
     
     $scope.prepareAnalogValuesForVisualization = function (ioIdentifier) {
       var graphObj = {};
-      //var ioIdentifierDescription = $scope.getAnalogIoIdentifierDescription(ioIdentifierId);
       var ioIdentifierDescription = ioIdentifier.description;
       if (ioIdentifierDescription === null) {
         ioIdentifierDescription = ioIdentifier.name;
@@ -169,9 +204,7 @@ angular.module('uvrLogViewerApp')
           }
         }
         var loggedValue = $scope.analogValues[ioIdentifier.id][i];
-        console.log(loggedValue);
         var loggedDataDate = new Date(loggedValue.datetime);
-        console.log(loggedDataDate);
         var loggedData = [Date.parse(loggedDataDate), loggedValue.value];
         graphObj.values.push(loggedData);
       }
@@ -180,7 +213,36 @@ angular.module('uvrLogViewerApp')
         // Save to analogValuesForVisualization for later usage    
         $scope.analogValuesForVisualization[ioIdentifier.id] = graphObj;
         // Push to vizualizationData List to show the prepared values up in the graph
-        $scope.vizualizationData.push(graphObj);
+        $scope.analogVizualizationData.push(graphObj);
+      }
+    };
+    
+    $scope.prepareDigitalValuesForVisualization = function (ioIdentifier) {
+      var graphObj = {};
+      var ioIdentifierDescription = ioIdentifier.description;
+      if (ioIdentifierDescription === null) {
+        ioIdentifierDescription = ioIdentifier.name;
+      }
+      graphObj['key'] = ioIdentifierDescription;
+      graphObj['values'] = [];
+      for (var i=0; i < $scope.digitalValues[ioIdentifier.id].length; i++) {
+        if($scope.digitalValues[ioIdentifier.id].length > 10000) {
+          if(i % 100 != 0) {
+            console.log("skip..");
+            continue;
+          }
+        }
+        var loggedValue = $scope.digitalValues[ioIdentifier.id][i];
+        var loggedDataDate = new Date(loggedValue.datetime);
+        var loggedData = [Date.parse(loggedDataDate), loggedValue.value];
+        graphObj.values.push(loggedData);
+      }
+      console.log('Successfully prepared data for identifier ' + ioIdentifier.id + ' (' + graphObj['key'] + ')');
+      if (graphObj.values.length > 0) {
+        // Save to analogValuesForVisualization for later usage    
+        $scope.digitalValuesForVisualization[ioIdentifier.id] = graphObj;
+        // Push to vizualizationData List to show the prepared values up in the graph
+        $scope.digitalVizualizationData.push(graphObj);
       }
     };
     
@@ -190,7 +252,7 @@ angular.module('uvrLogViewerApp')
           console.log('Selected ' + ioIdentifier.name + ' (' + ioIdentifier.description + ')');
           if ($scope.analogValuesForVisualization[ioIdentifier.id] !== undefined) {
             console.log('Using previously prepared data for ' + ioIdentifier.name + ' (' + ioIdentifier.description + ')');
-            $scope.vizualizationData.push($scope.analogValuesForVisualization[ioIdentifier.id]);
+            $scope.analogVizualizationData.push($scope.analogValuesForVisualization[ioIdentifier.id]);
           }
           else {
             $scope.getAnalogValuesForIoIdentifier(ioIdentifier);
@@ -202,6 +264,46 @@ angular.module('uvrLogViewerApp')
           break;
       }
     };
+    
+    $scope.onDigitalIoIdentifierSelectionChanged = function(ioIdentifier) {
+      switch(ioIdentifier.selected) {
+        case true:
+          console.log('Selected ' + ioIdentifier.name + ' (' + ioIdentifier.description + ')');
+          if ($scope.digitalValuesForVisualization[ioIdentifier.id] !== undefined) {
+            console.log('Using previously prepared data for ' + ioIdentifier.name + ' (' + ioIdentifier.description + ')');
+            $scope.digitalVizualizationData.push($scope.digitalValuesForVisualization[ioIdentifier.id]);
+          }
+          else {
+            $scope.getDigitalValuesForIoIdentifier(ioIdentifier);
+          }
+          break;
+        case false:
+          console.log('Unselected ' + ioIdentifier.name + ' (' + ioIdentifier.description + ')');
+          $scope.removeDigitalIoIdentifierFromGraph(ioIdentifier);
+          break;
+      }
+    };
+
+    /*$scope.$watch('showValueType', function(current, original) {
+      if(current === original)  {
+        return null;
+      }
+      if(current === 'schema') {
+        console.log('NOW SCHEMA!');
+        // Get the Object by ID
+        //var a = document.getElementById("svgObject");
+        //console.log(a);
+        // Get the SVG document inside the Object tag
+        //var svgDoc = a.contentDocument;
+        // Get one of the SVG items by ID;
+        //var svgItem = svgDoc.getElementById("Analog1");
+        //svgItem.textContent = 'ABC';
+        var statusElm = document.getElementById("svgObject")
+          .getSVGDocument().getElementById("Analog1");
+        console.log(statusElm);
+        statusElm.textContent = '45.2 °C';
+      }
+    });*/
       
     $scope.updateView();
   }]);
