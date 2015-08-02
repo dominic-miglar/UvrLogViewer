@@ -37,14 +37,26 @@ uvrLogViewerApi.factory('Api', function ($rootScope, $http, $cookieStore, $q, CO
     getIoIdentifiersForController: function (controller) {
       return $http.get(CONFIGURATION.apiUrl + 'ioidentifiers/?controller=' + controller.id);
     },
+    getActiveIoIdentifiersForController: function (controller) {
+      return $http.get(CONFIGURATION.apiUrl + 'ioidentifiers/?controller=' + controller.id + '&is_active=True');
+    },
     getAnalogIoIdentifiersForController: function (controller) {
       return $http.get(CONFIGURATION.apiUrl + 'ioidentifiers/?controller=' + controller.id + '&type=' + IDENTIFIER_TYPE_ANALOG);
+    },
+    getActiveAnalogIoIdentifiersForController: function (controller) {
+      return $http.get(CONFIGURATION.apiUrl + 'ioidentifiers/?controller=' + controller.id + '&type=' + IDENTIFIER_TYPE_ANALOG + '&is_active=True');
     },
     getDigitalIoIdentifiersForController: function (controller) {
       return $http.get(CONFIGURATION.apiUrl + 'ioidentifiers/?controller=' + controller.id + '&type=' + IDENTIFIER_TYPE_DIGITAL);
     },
+    getActiveDigitalIoIdentifiersForController: function (controller) {
+      return $http.get(CONFIGURATION.apiUrl + 'ioidentifiers/?controller=' + controller.id + '&type=' + IDENTIFIER_TYPE_DIGITAL + '&is_active=True');
+    },
     getHeatMeterIoIdentifiersForController: function (controller) {
       return $http.get(CONFIGURATION.apiUrl + 'ioidentifiers/?controller=' + controller.id + '&type=' + IDENTIFIER_TYPE_HEATMETER);
+    },
+    getActiveHeatMeterIoIdentifiersForController: function (controller) {
+      return $http.get(CONFIGURATION.apiUrl + 'ioidentifiers/?controller=' + controller.id + '&type=' + IDENTIFIER_TYPE_HEATMETER + '&is_active=True');
     },
     /* IO Values */
     getAnalogValue: function (valueId) {
@@ -67,9 +79,6 @@ uvrLogViewerApi.factory('Api', function ($rootScope, $http, $cookieStore, $q, CO
     updateIoIdentifier: function (ioIdentifier) {
       return $http.put(CONFIGURATION.apiUrl + 'ioidentifiers/' + ioIdentifier.id + '/', ioIdentifier);
     },
-    updateController: function (controller) {
-      return $http.put(CONFIGURATION.apiUrl + 'controllers/' + controller.id + '/', controller);
-    },
     getDigitalValuesForIoIdentifier: function(ioIdentifierId, date_from) {
       var today = new Date();
       var fromDateWanted = new Date();
@@ -77,6 +86,14 @@ uvrLogViewerApi.factory('Api', function ($rootScope, $http, $cookieStore, $q, CO
       var getUrl = CONFIGURATION.apiUrl + 'digitalvalues/' + '?io_identifier=' + ioIdentifierId + '&date_from=' + fromDateWanted.getFullYear() + '-' + (fromDateWanted.getMonth()+1) + '-' + fromDateWanted.getDate();
       console.log(getUrl);
       return $http.get(getUrl);
+    },
+    getSchemaForController: function (controller) {
+      if(controller.schema_active === null) {
+        return null;
+      }
+      var getSchemaUrl = CONFIGURATION.apiUrl + 'uploadedschemas/' + controller.schema_active + '/';
+      console.log(getSchemaUrl);
+      return $http.get(getSchemaUrl);
     }
   };
 });

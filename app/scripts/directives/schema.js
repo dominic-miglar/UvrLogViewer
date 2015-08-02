@@ -6,8 +6,9 @@ var schemaDirective = function(uvrValueFilter) {
   return {
     restrict: "E",
     replace: true,
-    template: "<object type='image/svg+xml' width='100%' height='100%' data='http://10.0.0.8/heatSVG/drawing.svg'></object>",
-    controller: 'ControllerCtrl', 
+    //template: "<object type='image/svg+xml' width='100%' height='100%' ng-attr-data='{{ vm.controller.schema.uploaded_file }}'></object>",
+    template: "<svg id='schema' viewbox='0 0 1920 1080'></svg>",
+    controller: 'ControllerCtrl',
     controllerAs: 'vm',
     link: function(scope, element, attrs, ctrl) {
       var valuesByIdentifierName = [];
@@ -38,14 +39,14 @@ var schemaDirective = function(uvrValueFilter) {
         }
       };
 
-      var updateValues = function(svgDocument) {
-        updateValuesByIdentifierName();
-        for(var name in valuesByIdentifierName) {
-          var svgTextElement = svgDocument.getElementById(name);
-          if(svgTextElement != null) {
-            svgTextElement.textContent = valuesByIdentifierName[name];
-          }
-        }
+      var updateValues = function() {
+       updateValuesByIdentifierName();
+       for(var name in valuesByIdentifierName) {
+         if(document.getElementById(name) != null) {
+           console.log('Setting ' + name + ' to value ' + valuesByIdentifierName[name]);
+           document.getElementById(name).textContent = valuesByIdentifierName[name];
+         }
+       }
       };
 
       var generateSvg = function(newValue, oldValue) {
@@ -53,15 +54,14 @@ var schemaDirective = function(uvrValueFilter) {
           return null;
         }
 
-        var svgObject = element[0];
-        svgObject.addEventListener('load', function() {
-          var svgDoc = svgObject.getSVGDocument();
-          updateValues(svgDoc);
-        }, false);
+        var s = Snap('#schema');
+        Snap.load(ctrl.controller.schema.uploaded_file, function (data) {
+          s.add(data);
+          updateValues();
+        });
 
       };
       scope.$watch('showValueType', generateSvg);
-      //generateSvg();
     }
   }
 };

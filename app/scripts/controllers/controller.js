@@ -135,10 +135,30 @@ angular.module('uvrLogViewerApp')
       Api.getController($scope.controllerId).then(
         function (response) {
           $scope.controller = response.data;
+          vm.controller = response.data;
+          $scope.getSchema();
           $scope.getAnalogIoIdentifiers();
           $scope.getDigitalIoIdentifiers();
           $scope.getHeatMeterIoIdentifiers();
       });
+    };
+
+    $scope.getSchema = function () {
+      var promise = Api.getSchemaForController($scope.controller);
+      if(promise === null) {
+        $scope.controller.schema = null;
+        vm.controller.schema = null;
+      }
+      else {
+        promise.then(
+          function (response) {
+            $scope.controller.schema = response.data;
+            vm.controller.schema = response.data;
+            console.log('Schema here: ');
+            console.log($scope.controller.schema);
+          }
+        );
+      }
     };
     
     $scope.getAnalogValuesForIoIdentifier = function (ioIdentifier) {

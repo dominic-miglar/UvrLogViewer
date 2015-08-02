@@ -20,6 +20,7 @@ angular.module('uvrLogViewerApp')
           Api.getIoIdentifiersForController($scope.controller).then(
             function (response) {
               $scope.ioIdentifiers = response.data;
+              console.log($scope.ioIdentifiers);
               for (var i = 0; i < $scope.ioIdentifiers.length; i++) {
                 var ioIdentifier = $scope.ioIdentifiers[i];
                 switch(ioIdentifier.type) {

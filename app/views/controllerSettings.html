@@ -49,7 +49,8 @@
             <thead>
               <tr>
                 <th class="col-md-2">Name</th>
-                <th class="col-md-9">Beschreibung</th>
+                <th class="col-md-8">Beschreibung</th>
+                <th class="col-md-1">Aktiv?</th>
                 <th class="col-md-1"></th>
               </tr>
             </thead>
@@ -57,6 +58,7 @@
               <tr ng-repeat="ioIdentifier in analogIoIdentifiers">
                 <td>{{ ioIdentifier.name }}</td>
                 <td><input type="text" class="form-control" placeholder="Beschreibung" ng-model="ioIdentifier.description" /></td>
+                <td><input type="checkbox" class="form-control" ng-model="ioIdentifier.is_active" /></td>
                 <td><button class="btn btn-default" ng-click="updateIoIdentifier(ioIdentifier)">Speichern</button></td>
               </tr>
             </tbody>
@@ -72,7 +74,8 @@
             <thead>
               <tr>
                 <th class="col-md-2">Name</th>
-                <th class="col-md-9">Beschreibung</th>
+                <th class="col-md-8">Beschreibung</th>
+                <th class="col-md-1"></th>
                 <th class="col-md-1"></th>
               </tr>
             </thead>
@@ -80,6 +83,7 @@
               <tr ng-repeat="ioIdentifier in digitalIoIdentifiers">
                 <td>{{ ioIdentifier.name }}</td>
                 <td><input type="text" class="form-control" placeholder="Beschreibung" ng-model="ioIdentifier.description" /></td>
+                <td><input type="checkbox" class="form-control" ng-model="ioIdentifier.is_active" /></td>
                 <td><button class="btn btn-default" ng-click="updateIoIdentifier(ioIdentifier)">Speichern</button></td>
               </tr>
             </tbody>
@@ -103,6 +107,7 @@
               <tr ng-repeat="ioIdentifier in heatMeterIoIdentifiers">
                 <td>{{ ioIdentifier.name }}</td>
                 <td><input type="text" class="form-control" placeholder="Beschreibung" ng-model="ioIdentifier.description" /></td>
+                <td><input type="checkbox" class="form-control" ng-model="ioIdentifier.is_active" /></td>
                 <td><button class="btn btn-default" ng-click="updateIoIdentifier(ioIdentifier)">Speichern</button></td>
               </tr>
             </tbody>

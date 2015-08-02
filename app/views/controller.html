@@ -62,7 +62,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="ioIdentifier in analogIoIdentifiers" 
+              <tr ng-repeat="ioIdentifier in analogIoIdentifiers | filter:{is_active:true}"
                   selection-model 
                   selection-model-type="checkbox"
                   selection-model-mode="multiple-additive" 
@@ -91,7 +91,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="ioIdentifier in digitalIoIdentifiers"
+              <tr ng-repeat="ioIdentifier in digitalIoIdentifiers | filter:{is_active:true}"
                   selection-model 
                   selection-model-type="checkbox"
                   selection-model-mode="multiple-additive" 
@@ -120,7 +120,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="ioIdentifier in heatMeterIoIdentifiers">
+            <tr ng-repeat="ioIdentifier in heatMeterIoIdentifiers | filter:{is_active:true}">
               <td>{{ ioIdentifier.name }}</td>
               <td>{{ ioIdentifier.description }}</td>
               <td>{{ latestValues[ioIdentifier.latest_value] | uvrPower }}</td>
@@ -131,10 +131,6 @@
       </div>
       </div>
       <div ng-show="showValueType == 'schema'">
-        <!--<object id="svgObject" data="http://10.0.0.8/heatSVG/drawing.svg" type="image/svg+xml"
-          width="100%" height="100%">
-          <p>Your browser does not support SVG images.</p>
-        </object>-->
         <schema></schema>
       </div>
     </div>
