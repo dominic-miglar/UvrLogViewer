@@ -55,6 +55,7 @@ var schemaDirective = function(uvrValueFilter, uvrDigitalSpeedFilter) {
           return null;
         }
 
+        $('#schema').empty();
         var s = Snap('#schema');
         Snap.load(ctrl.controller.schema.uploaded_file, function (data) {
           s.add(data);
