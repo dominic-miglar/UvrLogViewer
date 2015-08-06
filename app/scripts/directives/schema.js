@@ -2,7 +2,7 @@
 
 var uvrLogViewerApp = angular.module('uvrLogViewerApp');
 
-var schemaDirective = function(uvrValueFilter) {
+var schemaDirective = function(uvrValueFilter, uvrDigitalSpeedFilter) {
   return {
     restrict: "E",
     replace: true,
@@ -25,14 +25,15 @@ var schemaDirective = function(uvrValueFilter) {
         }
         for(var i = 0; i < ctrl.digitalIoIdentifiers.length; i++) {
           var ioIdentifier = ctrl.digitalIoIdentifiers[i];
-          var fmtValue = uvrValueFilter(
+          /*var fmtValue = uvrValueFilter(
+            ctrl.latestValues[ioIdentifier.latest_value],
+            ioIdentifier
+          );*/
+          var fmtValue = uvrDigitalSpeedFilter(
             ctrl.latestValues[ioIdentifier.latest_value],
             ioIdentifier
           );
           valuesByIdentifierName[ioIdentifier.name] = fmtValue;
-          console.log(fmtValue);
-
-          // TODO: SPEED (Drehzahlstufe)
         }
         for(var i = 0; i < ctrl.heatMeterIoIdentifiers.length; i++) {
           // TODO Power and Energy
@@ -66,6 +67,6 @@ var schemaDirective = function(uvrValueFilter) {
   }
 };
 
-schemaDirective.$inject = ['uvrValueFilter'];
+schemaDirective.$inject = ['uvrValueFilter', 'uvrDigitalSpeedFilter'];
 uvrLogViewerApp.directive('schema', schemaDirective);
 
